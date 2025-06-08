@@ -8,9 +8,18 @@ use App\Models\Character;
 
 class CharacterController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Character::all());
+        $query = Character::query();
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+
+            $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('rank', 'like', "%$search");
+        }
+
+        return response()->json($query->get());
     }
 
     public function store(Request $request)
