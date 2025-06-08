@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('rank');
-            $table->unsignedTinyInteger('power');
-            $table->unsignedTinyInteger('speed');
-            $table->unsignedTinyInteger('jump');
-            $table->unsignedTinyInteger('deff');
+            $table->Integer('power');
+            $table->Integer('speed');
+            $table->Integer('jump');
+            $table->Integer('deff');
             $table->timestamps();
         });
     }

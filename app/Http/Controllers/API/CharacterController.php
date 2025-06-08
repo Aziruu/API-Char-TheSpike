@@ -12,14 +12,45 @@ class CharacterController extends Controller
     {
         $query = Character::query();
 
+        // Filter Nama dan Rank Characters
         if ($request->has('search')) {
             $search = $request->get('search');
 
             $query->where('name', 'like', '%' . $search . '%')
-                        ->orWhere('rank', 'like', "%$search");
+                ->orWhere('rank', 'like', "%$search");
         }
 
-        return response()->json($query->get());
+        // Filter Range dari Kekuatan, Kecepatan, Lompatan, dan Ketahanan
+        // Power / Kekuatan
+        if ($request->has('min_power')) {
+            $query->where('power', '>=', $request->get('min_power'));
+        }
+
+        if ($request->has('max_power')) {
+            $query->where('power', '>=', $request->get('max_power'));
+        }
+
+        // Speed / Kecepatan
+        if ($request->has('min_speed')) {
+            $query->where('speed', '>=', $request->get('min_speed'));
+        }
+
+        if ($request->has('max_power')) {
+            $query->where('power', '>=', $request->get('max_speed'));
+        }
+
+        if ($request->has('sort_by')) {
+            $sortBy = $request->get('sort_by', 'name');
+            $order = $request->get('order', 'asc');
+            $query->orderBy($sortBy, $order);
+        }
+
+        // Role Request
+        if ($request->has('role')) {
+            $query->where('role', $request->get('role'));
+        }
+
+            return response()->json($query->paginate(5));
     }
 
     public function store(Request $request)
@@ -27,6 +58,7 @@ class CharacterController extends Controller
         $data = $request->validate([
             'name' => 'required|string',
             'rank' => 'required|string',
+            'role' => 'required|string|in:Setter,Spiker,Blocker',
             'power' => 'required|integer|between:0,300',
             'speed' => 'required|integer|between:0,300',
             'jump' => 'required|integer|between:0,300',
@@ -48,6 +80,7 @@ class CharacterController extends Controller
         $data = $request->validate([
             'name' => 'required|string',
             'rank' => 'required|string',
+            'role' => 'required|string|in:Setter,Spiker,Blocker',
             'power' => 'required|integer|between:0,300',
             'speed' => 'required|integer|between:0,300',
             'jump' => 'required|integer|between:0,300',

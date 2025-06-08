@@ -9,6 +9,7 @@ class Character extends Model
     protected $fillable = [
         'name',
         'rank', 
+        'role',
         'power',
         'speed',
         'jump',
