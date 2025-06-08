@@ -12,4 +12,6 @@ Route::get('/test', function() {
     return response()->json(['message' => 'API works!']);
 });
 
+Route::get('/characters/group-by-role', [CharacterController::class, 'groupByRole']);
+
 Route::apiResource('/characters', CharacterController::class);

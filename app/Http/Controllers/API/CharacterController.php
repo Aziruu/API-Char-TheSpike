@@ -16,6 +16,7 @@ class CharacterController extends Controller
         if ($request->has('search')) {
             $search = $request->get('search');
 
+            //Note Jika Rank nya "+" gunakan "%2B" & Jika "-" gunakan "2%D"
             $query->where('name', 'like', '%' . $search . '%')
                 ->orWhere('rank', 'like', "%$search");
         }
@@ -50,7 +51,7 @@ class CharacterController extends Controller
             $query->where('role', $request->get('role'));
         }
 
-            return response()->json($query->paginate(5));
+        return response()->json($query->paginate(5));
     }
 
     public function store(Request $request)
@@ -96,5 +97,12 @@ class CharacterController extends Controller
     {
         Character::destroy($id);
         return response()->json(null, 204);
+    }
+
+    public function groupByRole()
+    {
+        $grouped = Character::all()->groupBy('role');
+
+        return response()->json($grouped);
     }
 }
