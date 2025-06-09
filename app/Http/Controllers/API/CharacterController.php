@@ -21,6 +21,12 @@ class CharacterController extends Controller
                 ->orWhere('rank', 'like', "%$search");
         }
 
+        // Request Multi-Rank Filter
+        if ($request->has('rank')) {
+            $ranks = $request->get('rank');
+            $query->where('rank', $ranks);
+        }
+
         // Filter Range dari Kekuatan, Kecepatan, Lompatan, dan Ketahanan
         // Power / Kekuatan
         if ($request->has('min_power')) {
@@ -28,7 +34,7 @@ class CharacterController extends Controller
         }
 
         if ($request->has('max_power')) {
-            $query->where('power', '>=', $request->get('max_power'));
+            $query->where('power', '<=', $request->get('max_power'));
         }
 
         // Speed / Kecepatan
@@ -36,10 +42,11 @@ class CharacterController extends Controller
             $query->where('speed', '>=', $request->get('min_speed'));
         }
 
-        if ($request->has('max_power')) {
-            $query->where('power', '>=', $request->get('max_speed'));
+        if ($request->has('max_speed')) {
+            $query->where('speed', '<=', $request->get('max_speed'));
         }
 
+        // Sorting
         if ($request->has('sort_by')) {
             $sortBy = $request->get('sort_by', 'name');
             $order = $request->get('order', 'asc');
@@ -51,6 +58,7 @@ class CharacterController extends Controller
             $query->where('role', $request->get('role'));
         }
 
+        // Pagination (5 per Page)
         return response()->json($query->paginate(5));
     }
 
