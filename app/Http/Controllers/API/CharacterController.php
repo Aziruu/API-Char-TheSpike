@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Character;
+use App\Http\Resources\CharacterResource;
 
 class CharacterController extends Controller
 {
@@ -59,7 +60,7 @@ class CharacterController extends Controller
         }
 
         // Pagination (5 per Page)
-        return response()->json($query->paginate(5));
+        return CharacterResource::collection($query->paginate(5));
     }
 
     public function store(Request $request)
@@ -67,6 +68,7 @@ class CharacterController extends Controller
         $data = $request->validate([
             'name' => 'required|string',
             'rank' => 'required|string',
+            'team_id' => 'nullable|exists:teams,id',
             'role' => 'required|string|in:Setter,Spiker,Blocker',
             'power' => 'required|integer|between:0,300',
             'speed' => 'required|integer|between:0,300',
@@ -74,12 +76,12 @@ class CharacterController extends Controller
             'deff' => 'required|integer|between:0,300',
         ]);
 
-        return response()->json(Character::create($data), 201);
+        return new CharacterResource(Character::create($data), 201);
     }
 
     public function show($id)
     {
-        return response()->json(Character::findOrFail($id));
+        return new CharacterResource(Character::findOrFail($id));
     }
 
     public function update(Request $request, $id)
@@ -89,6 +91,7 @@ class CharacterController extends Controller
         $data = $request->validate([
             'name' => 'required|string',
             'rank' => 'required|string',
+            'team_id' => 'nullable|exists:teams,id',
             'role' => 'required|string|in:Setter,Spiker,Blocker',
             'power' => 'required|integer|between:0,300',
             'speed' => 'required|integer|between:0,300',
@@ -98,7 +101,7 @@ class CharacterController extends Controller
 
         $char->update($data);
 
-        return response()->json($char);
+        return new CharacterResource($char);
     }
 
     public function destroy($id)
@@ -111,6 +114,10 @@ class CharacterController extends Controller
     {
         $grouped = Character::all()->groupBy('role');
 
-        return response()->json($grouped);
+        $resource = $grouped->map(function ($group) {
+            return CharacterResource::collection($group);
+        });
+
+        return response()->json($resource);
     }
 }

@@ -15,4 +15,9 @@ class Character extends Model
         'jump',
         'deff'
     ];
+
+     public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
 }
