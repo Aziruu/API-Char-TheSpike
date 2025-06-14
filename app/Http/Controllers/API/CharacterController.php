@@ -129,8 +129,16 @@ class CharacterController extends Controller
 
     public function destroy($id)
     {
-        Character::destroy($id);
-        return response()->json(null, 204);
+        $char = Character::findOrFail($id);
+
+        // Hapus file avatar jika ada
+        if ($char->avatar && file_exists(public_path($char->avatar))) {
+            unlink(public_path($char->avatar));
+        }
+
+        $char->delete();
+
+        return response()->json(['message' => 'Character deleted successfully', 204]);
     }
 
     public function groupByRole()
