@@ -78,7 +78,14 @@ class CharacterController extends Controller
             'speed' => 'required|integer|between:0,300',
             'jump' => 'required|integer|between:0,300',
             'deff' => 'required|integer|between:0,300',
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        if ($request->hasFile('avatar')) {
+            $fillname = time() . '.' . $request->file('avatar')->getClientOriginalExtension();
+            $request->file('avatar')->move(public_path('uploads/avatars'), $fillname);
+            $data['avatar'] = 'uploads/avatars/' . $fillname;
+        }
 
         return new CharacterResource(Character::create($data), 201);
     }
@@ -101,7 +108,19 @@ class CharacterController extends Controller
             'speed' => 'required|integer|between:0,300',
             'jump' => 'required|integer|between:0,300',
             'deff' => 'required|integer|between:0,300',
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        if ($request->hasFile('avatar')) {
+            //hapus gambar avatar lama
+            if ($char->avatar && file_exists(public_path($char->avatar))) {
+                unlink(public_path($char->avatar));
+            }
+
+            $fillname = time() . '.' . $request->file('avatar')->getClientOriginalExtension();
+            $request->file('avatar')->move(public_path('uploads/avatars'), $fillname);
+            $data['avatar'] = 'uploads/avatars/' . $fillname;
+        }
 
         $char->update($data);
 

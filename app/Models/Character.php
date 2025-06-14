@@ -13,7 +13,8 @@ class Character extends Model
         'power',
         'speed',
         'jump',
-        'deff'
+        'deff',
+        'avatar'
     ];
 
      public function team()

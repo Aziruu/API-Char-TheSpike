@@ -24,6 +24,7 @@ class CharacterResource extends JsonResource
             'speed' => $this->speed,
             'jump' => $this->jump,
             'deffend' => $this->deff,
+            'avatar_url' => $this->avatar ? asset($this->avatar) : asset('uploads/avatars/default.png'),
         ];
     }
 }
