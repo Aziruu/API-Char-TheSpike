@@ -25,7 +25,11 @@ class CharacterController extends Controller
         // Request Multi-Rank Filter
         if ($request->has('rank')) {
             $ranks = $request->get('rank');
-            $query->where('rank', $ranks);
+            if (is_array($ranks)) {
+                $query->whereIn('rank', $ranks);
+            } else {
+                $query->where('rank', $ranks);
+            }
         }
 
         // Filter Range dari Kekuatan, Kecepatan, Lompatan, dan Ketahanan
