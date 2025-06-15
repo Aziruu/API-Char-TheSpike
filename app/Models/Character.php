@@ -21,4 +21,9 @@ class Character extends Model
     {
         return $this->belongsTo(Team::class);
     }
+
+        public function skillEfficiencies()
+    {
+        return $this->hasMany(SkillCharacters::class);
+    }
 }
