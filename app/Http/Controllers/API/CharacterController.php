@@ -64,7 +64,9 @@ class CharacterController extends Controller
         }
 
         // Pagination (5 per Page)
-        return CharacterResource::collection($query->paginate(5));
+        return CharacterResource::collection(
+            $query->with(['skillCharacters', 'team'])->paginate(5)
+        );
     }
 
     public function store(Request $request)
@@ -92,7 +94,8 @@ class CharacterController extends Controller
 
     public function show($id)
     {
-        return new CharacterResource(Character::findOrFail($id));
+        $character = Character::with(['skillCharacters', 'team'])->findOrFail($id);
+        return new CharacterResource($character);
     }
 
     public function update(Request $request, $id)

@@ -8,7 +8,7 @@ class Character extends Model
 {
     protected $fillable = [
         'name',
-        'rank', 
+        'rank',
         'role',
         'power',
         'speed',
@@ -17,12 +17,12 @@ class Character extends Model
         'avatar'
     ];
 
-     public function team()
+    public function team()
     {
         return $this->belongsTo(Team::class);
     }
 
-        public function skillEfficiencies()
+    public function skillCharacters()
     {
         return $this->hasMany(SkillCharacters::class);
     }

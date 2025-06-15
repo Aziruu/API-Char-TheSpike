@@ -18,9 +18,10 @@ class CharacterResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'rank' => $this->rank,
-            'skills' => $this->skillEfficiencies->map(function ($skill) {
+            'skills' => $this->skillCharacters->map(function ($skill) {
                 return [
                     'name' => $skill->skill_name,
+                    'cooldown' => $skill->cooldown,
                     'efficiency' => $skill->efficiency,
                     'description' => $skill->description,
                 ];

@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\CharacterController;
-use App\Http\Controllers\SkillCharactersController;
+use App\Http\Controllers\API\SkillCharactersController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -17,4 +17,4 @@ Route::get('/characters/group-by-role', [CharacterController::class, 'groupByRol
 
 Route::apiResource('/characters', CharacterController::class);
 
-Route::apiResource('skill-characters', SkillCharactersController::class);
+Route::apiResource('/skill-characters', SkillCharactersController::class);
