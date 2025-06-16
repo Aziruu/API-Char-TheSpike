@@ -89,7 +89,10 @@ class CharacterController extends Controller
             $data['avatar'] = 'uploads/avatars/' . $fillname;
         }
 
-        return new CharacterResource(Character::create($data), 201);
+        $character = Character::create($data);
+        $character->load(['skillCharacters', 'team']);
+
+        return new CharacterResource($character);
     }
 
     public function show($id)
@@ -126,6 +129,7 @@ class CharacterController extends Controller
         }
 
         $char->update($data);
+        $char->load(['skillCharacters', 'team']);
 
         return new CharacterResource($char);
     }

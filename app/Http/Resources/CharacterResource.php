@@ -18,14 +18,16 @@ class CharacterResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'rank' => $this->rank,
-            'skills' => $this->skillCharacters->map(function ($skill) {
-                return [
-                    'name' => $skill->skill_name,
-                    'cooldown' => $skill->cooldown,
-                    'efficiency' => $skill->efficiency,
-                    'description' => $skill->description,
-                ];
-            }),
+            'skills' => $this->whenLoaded('skillCharacters', function () {
+                return $this->skillCharacters->map(function ($skill) {
+                    return [
+                        'name' => $skill->skill_name,
+                        'cooldown' => $skill->cooldown,
+                        'efficiency' => $skill->efficiency,
+                        'description' => $skill->description,
+                    ];
+                });
+            }, []),
             'team' => $this->team ? $this->team->name : null,
             'role' => $this->role,
             'power' => $this->power,

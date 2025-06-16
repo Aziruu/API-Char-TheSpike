@@ -27,4 +27,9 @@ class Character extends Model
         return $this->belongsToMany(Skill::class, 'character_skill')
             ->withPivot('cooldown', 'efficiency')->withTimestamps();
     }
+
+    public function skillCharacters()
+    {
+        return $this->skill();
+    }
 }
