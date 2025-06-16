@@ -22,8 +22,9 @@ class Character extends Model
         return $this->belongsTo(Team::class);
     }
 
-    public function skillCharacters()
+    public function skill()
     {
-        return $this->hasMany(SkillCharacters::class);
+        return $this->belongsToMany(Skill::class, 'character_skill')
+            ->withPivot('cooldown', 'efficiency')->withTimestamps();
     }
 }

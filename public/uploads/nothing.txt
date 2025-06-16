@@ -1,13 +1,3 @@
 Nothing is Just For See Folder in Folder at Vscode.
 
 gaada apaa apaa, cmn buat enak liat folder di dalam folder biar rapih.
-
-GET /api/skill-characters
-
-POST /api/skill-characters
-
-GET /api/skill-characters/{id}
-
-PUT /api/skill-characters/{id}
-
-DELETE /api/skill-characters/{id}
